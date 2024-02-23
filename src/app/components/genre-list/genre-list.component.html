@@ -1,0 +1,52 @@
+<mat-card class="mat-elevation-z8">
+  <mat-card-header>
+    <mat-card-title>Listado de Géneros</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="search-bar">
+      <!-- Puedes agregar un campo de búsqueda si es necesario -->
+      <mat-form-field>
+        <input matInput (input)="applyFilter($event)" placeholder="Buscar" #input>
+      </mat-form-field>
+      <!-- Agregar el botón de creación -->
+      <button mat-raised-button color="accent" (click)="openAddGenreDialog()">
+        <mat-icon>add</mat-icon> Agregar Genero
+      </button>
+    </div>
+
+    <table matSort mat-table [dataSource]="dataSource">
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+        <td mat-cell *matCellDef="let row">{{row.id}}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+        <td mat-cell *matCellDef="let row">{{row.name | titlecase}}</td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Acción</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-mini-fab color="primary" (click)="openEditGenreDialog(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-mini-fab color="warn" (click)="deleteGenre(element.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

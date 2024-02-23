@@ -1,0 +1,53 @@
+<mat-card class="edit-book-card">
+  <mat-card-header>
+    <mat-card-title>Editar Libro</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="bookForm" class="add-book-form">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Title" formControlName="title">
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Editorial</mat-label>
+        <mat-select formControlName="editorial_id">
+          <mat-option *ngFor="let editorial of editorials" [value]="editorial.id">
+            {{ editorial.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Author</mat-label>
+        <mat-select formControlName="author_id">
+          <mat-option *ngFor="let author of authors" [value]="author.id">
+            {{ author.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Genre</mat-label>
+        <mat-select formControlName="genre_id">
+          <mat-option *ngFor="let genre of genres" [value]="genre.id">
+            {{ genre.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Stock" formControlName="stock">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <input matInput placeholder="Available" formControlName="available">
+    </mat-form-field>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="saveBook()">Guardar</button>
+    <button mat-button (click)="cancel()">Cancelar</button>
+  </mat-card-actions>
+</mat-card>

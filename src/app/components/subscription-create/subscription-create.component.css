@@ -1,0 +1,13 @@
+.content-container {
+    display: flex;
+  }
+  
+  .select-container {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .select-container mat-form-field {
+    margin-right: 10px;
+  }
+  

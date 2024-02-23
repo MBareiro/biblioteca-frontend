@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Renovar Suscripción</h1>
+<div mat-dialog-content>
+  <p>Selecciona por cuántos meses deseas renovar la suscripción:</p>
+  <mat-form-field>
+    <mat-label>Meses</mat-label>
+    <mat-select [(value)]="selectedMonths">
+      <mat-option *ngFor="let month of months" [value]="month">{{ month }} meses</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button mat-button color="primary" (click)="renew()">Renovar</button>
+</div>

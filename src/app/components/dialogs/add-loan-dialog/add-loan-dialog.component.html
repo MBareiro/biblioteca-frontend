@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Agregar Préstamo</h2>
+<mat-dialog-content>
+    <form [formGroup]="loanForm">
+
+        <mat-form-field>
+            <mat-label>Fecha de Préstamo</mat-label>
+            <input matInput [matDatepicker]="loanDatepicker" formControlName="loan_date" required>
+            <mat-datepicker-toggle matSuffix [for]="loanDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #loanDatepicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha de Devolución</mat-label>
+            <input matInput [matDatepicker]="returnDatepicker" formControlName="return_date" required>
+            <mat-datepicker-toggle matSuffix [for]="returnDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #returnDatepicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Beneficiario</mat-label>
+            <mat-select formControlName="beneficiaries_id" required (selectionChange)="onBeneficiarySelectionChange()">
+                <mat-option *ngFor="let beneficiary of beneficiaries" [value]="beneficiary.id">
+                    {{ beneficiary.name }} {{ beneficiary.last_name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Libro</mat-label>
+            <mat-select formControlName="books_id" required>
+                <mat-option *ngFor="let book of availableBooks" [value]="book.id">
+                    {{ book.title }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancelar</button>
+    <button mat-button color="primary" (click)="save()">Guardar</button>
+</mat-dialog-actions>

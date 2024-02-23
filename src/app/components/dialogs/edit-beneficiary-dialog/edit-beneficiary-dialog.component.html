@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Editar Beneficiario</h1>
+<div mat-dialog-content>
+  <form [formGroup]="editForm">
+    <!-- Agrega los campos de edición aquí -->
+    <mat-form-field>
+      <input matInput placeholder="Nombre" formControlName="name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Apellido" formControlName="last_name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Teléfono" formControlName="phone">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button color="primary" (click)="onSaveClick()">Guardar</button>
+</div>

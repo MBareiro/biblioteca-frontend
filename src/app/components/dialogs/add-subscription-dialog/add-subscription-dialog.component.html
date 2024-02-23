@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Crear suscripción</h2>
+<div mat-dialog-content class="content-container">
+  <!-- Select para elegir beneficiario -->
+  <div class="select-container">
+    <mat-form-field>
+      <mat-label>Seleccionar Beneficiario</mat-label>
+      <mat-select [(ngModel)]="subscription.id_user">
+        <mat-option *ngFor="let beneficiary of beneficiaries" [value]="beneficiary.id">
+          {{ beneficiary.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Select para elegir duración de la suscripción -->
+    <mat-form-field>
+      <mat-label>Duración de la suscripción (en meses)</mat-label>
+      <mat-select [(ngModel)]="duration" name="duration" (ngModelChange)="calculateEndDate()">
+        <mat-option *ngFor="let month of months" [value]="month">{{ month }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="cancel()">Cancelar</button>
+  <button mat-button color="primary" (click)="saveSubscription()">Guardar</button>
+</div>

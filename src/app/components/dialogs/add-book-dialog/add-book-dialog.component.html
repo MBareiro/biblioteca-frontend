@@ -1,0 +1,63 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Agregar Libro</mat-card-title>
+    </mat-card-header>
+    <mat-dialog-content>
+        <form [formGroup]="bookForm">
+            <mat-form-field class="full-width">
+                <input matInput placeholder="Title" formControlName="title">
+            </mat-form-field>
+
+            <!-- Agrega el botón "Agregar" con la llamada a la función openAddEditorialDialog -->
+            <mat-form-field class="full-width">
+                <mat-label>Editorial</mat-label>
+                <mat-select formControlName="editorialId">
+                    <mat-option *ngFor="let editorial of editorials" [value]="editorial.id">
+                        {{ editorial.name }}
+                    </mat-option>
+                </mat-select>
+                <button mat-icon-button matSuffix color="primary" (click)="openAddEditorialDialog($event)">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-form-field>
+
+
+            <mat-form-field class="full-width">
+                <mat-label>Author</mat-label>
+                <mat-select formControlName="authorId">
+                    <mat-option *ngFor="let author of authors" [value]="author.id">
+                        {{ author.name }}
+                    </mat-option>
+                </mat-select>
+                <button mat-icon-button matSuffix color="primary" (click)="openAddAuthorDialog($event)">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-label>Genre</mat-label>
+                <mat-select formControlName="genreId">
+                    <mat-option *ngFor="let genre of genres" [value]="genre.id">
+                        {{ genre.name }}
+                    </mat-option>
+                </mat-select>
+                <button mat-icon-button matSuffix color="primary" (click)="openAddGenreDialog($event)">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <input matInput placeholder="Stock" formControlName="stock">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <input matInput placeholder="Available" formControlName="available">
+            </mat-form-field>
+
+            <div class="button-container">
+                <button mat-raised-button color="primary" (click)="saveBook()">Save</button>
+                <button mat-button (click)="cancel()">Cancel</button>
+            </div>
+        </form>
+    </mat-dialog-content>
+</mat-card>

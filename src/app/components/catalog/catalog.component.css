@@ -1,0 +1,17 @@
+.full-width-table {
+  width: 100%;  
+}
+
+.mat-elevation-z8{
+  margin: 15px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: flex-start; /* Alinea los elementos en la parte superior */
+  gap: 10px; /* Ajusta la separación entre los elementos */
+}
+
+.create-button {
+  align-self: flex-start; /* Alinea el botón en la parte superior */
+}

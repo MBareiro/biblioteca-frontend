@@ -1,0 +1,64 @@
+<mat-card class="mat-elevation-z8">
+  <mat-card-header>
+    <mat-card-title>Agregar Préstamo</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form (ngSubmit)="saveLoan()" #loanForm="ngForm">
+      <div class="form-fields">
+        <div class="input-group">
+          <mat-form-field>
+            <mat-label>Fecha de Préstamo</mat-label>
+            <input matInput [matDatepicker]="loanDatepicker" [(ngModel)]="loan.loan_date" name="loan_date" required>
+            <mat-datepicker-toggle matSuffix [for]="loanDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #loanDatepicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Fecha de Devolución</mat-label>
+            <input matInput [matDatepicker]="returnDatepicker" [(ngModel)]="loan.return_date" name="return_date"
+              required>
+            <mat-datepicker-toggle matSuffix [for]="returnDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #returnDatepicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+
+        <div class="input-group">
+         <!--  <mat-form-field>
+            <mat-label>Devuelto</mat-label>
+            <mat-select [(ngModel)]="loan.returned" name="returned" required>
+              <mat-option value="true">Sí</mat-option>
+              <mat-option value="false">No</mat-option>
+            </mat-select>
+          </mat-form-field> -->
+
+          <mat-form-field>
+            <mat-label>Beneficiario</mat-label>
+            <mat-select [(ngModel)]="loan.beneficiaries_id" name="beneficiaries_id" required>
+              <mat-option *ngFor="let beneficiary of beneficiaries" [value]="beneficiary.id">
+                {{ beneficiary.name }} {{ beneficiary.last_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Libro</mat-label>
+            <mat-select [(ngModel)]="loan.books_id" name="books_id" required>
+              <mat-option *ngFor="let book of availableBooks" [value]="book.id">
+                {{ book.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+        </div>
+
+      </div>
+
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+        <button mat-button type="button" (click)="cancel()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

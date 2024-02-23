@@ -1,0 +1,74 @@
+
+<mat-card class="mat-elevation-z8">
+  <mat-card-header>
+    <mat-card-title>Listado de Suscripciones</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="search-bar">
+      <!-- Puedes agregar un campo de búsqueda si es necesario -->
+      <mat-form-field>
+        <input matInput (input)="applyFilter($event)" placeholder="Buscar" #input>
+      </mat-form-field>
+      <button mat-raised-button color="accent" (click)="openAddSubscriptionDialog()">
+        <mat-icon>add</mat-icon> Registrar
+      </button>
+    </div>
+
+    <table matSort mat-table [dataSource]="dataSource">
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+        <td mat-cell *matCellDef="let row">{{row.id}}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre completo</th>
+        <td mat-cell *matCellDef="let row">{{row.name}} {{row.last_name}}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="start_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Inicio</th>
+        <td mat-cell *matCellDef="let row">{{row.start_date | date: 'dd/MM/yyyy'}}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="end_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Vencimiento</th>
+        <td mat-cell *matCellDef="let row">{{row.end_date | date: 'dd/MM/yyyy'}}</td>
+      </ng-container>
+
+      <!-- State Column -->
+      <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let row" [ngStyle]="{ 'background-color': getBackgroundColor(row) }">{{
+          getSubscriptionState(row) }}</td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Acción</th>
+        <td mat-cell *matCellDef="let element">
+          <!-- <button mat-mini-fab color="primary" (click)="openEditSubscriptionDialog(element)">
+            <mat-icon>edit</mat-icon>
+          </button> -->
+          <button mat-mini-fab color="warn" (click)="deleteSubscription(element.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-mini-fab color="secondary" (click)="openRenewSubscriptionDialog(element)">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

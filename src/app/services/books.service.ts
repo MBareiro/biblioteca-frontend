@@ -30,4 +30,31 @@ export class BooksService {
     const deleteUrl = `${this.baseUrl}/${id}`;
     return this.httpClient.delete<void>(deleteUrl);
   }
+
+  getBookTitles(): Observable<string[]> {
+    const titlesUrl = `${this.baseUrl}/titles`;
+    return this.httpClient.get<string[]>(titlesUrl);
+  }
+
+  // Método para verificar si un libro ya existe
+  checkBookExists(bookData: any): Observable<boolean> {
+    const checkUrl = `${this.baseUrl}/exists`;
+    return this.httpClient.post<boolean>(checkUrl, bookData);
+  }
+  
+  getBooksByAuthorId(authorId: number): Observable<any[]> {
+    const booksByAuthorUrl = `${this.baseUrl}/author/${authorId}`;
+    return this.httpClient.get<any[]>(booksByAuthorUrl);
+  }
+
+  getBooksByGenreId(genreId: number): Observable<any[]> {
+    const booksByGenreUrl = `${this.baseUrl}/genre/${genreId}`;
+    return this.httpClient.get<any[]>(booksByGenreUrl);
+  }
+
+  getBooksByEditorialId(editorialId: number): Observable<any[]> {
+    const booksByEditorialUrl = `${this.baseUrl}/editorial/${editorialId}`;
+    return this.httpClient.get<any[]>(booksByEditorialUrl);
+  }
+
 }

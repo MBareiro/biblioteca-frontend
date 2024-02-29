@@ -30,9 +30,12 @@ export class BeneficiariesListComponent implements AfterViewInit {
     new MatTableDataSource<Beneficiary>();
   displayedColumns: string[] = [
     'id',
-    'name',
-    'last_name',
+    'name',/* 
+    'last_name', */
     'phone',
+    'address',
+    'dni',
+    'birthdate',
     'action',
   ];
 
@@ -70,7 +73,7 @@ export class BeneficiariesListComponent implements AfterViewInit {
 
   openAddBeneficiaryDialog(): void {
     const dialogRef = this.dialog.open(AddBeneficiaryDialogComponent, {
-      width: '260px',
+      width: '290px',
       data: {}
     });
 
@@ -80,7 +83,10 @@ export class BeneficiariesListComponent implements AfterViewInit {
         const beneficiaryData = {
           name: result.name,
           last_name: result.last_name,
-          phone: result.phone
+          phone: result.phone,
+          address: result.address,
+          dni: result.dni,
+          birthdate: result.birthdate
         };
 
         this.beneficiaryService.addBeneficiary(beneficiaryData).subscribe(
@@ -128,15 +134,31 @@ export class BeneficiariesListComponent implements AfterViewInit {
       () => {
         // Eliminación exitosa, actualizar la lista de beneficiarios
         this.loadBeneficiaries();
-        this.snackBar.open('Beneficiario editado con exito', 'Cerrar', {
+        this.snackBar.open('Beneficiario eliminado con éxito', 'Cerrar', {
           duration: 4000
         });
       },
       (error) => {
-        console.error('Error al eliminar beneficiario:', error);
+        if (error.status === 400 && error.error.error === 'Cannot delete beneficiary with an active subscription') {
+          this.snackBar.open('No se puede eliminar el beneficiario con una suscripción activa', 'Cerrar', {
+            duration: 4000
+          });
+        } else if (error.status === 400 && error.error.error === 'Cannot delete beneficiary with books pending return') {
+          this.snackBar.open('No se puede eliminar el beneficiario. El beneficiario no tiene una suscripción activa pero tiene libros pendientes por devolver o registros asociados.', 'Cerrar', {
+            duration: 4000
+          });
+        } else {
+          this.snackBar.open('Error al eliminar el beneficiario: ' + error.error.message, 'Cerrar', {
+            duration: 4000
+          });
+        }
       }
     );
   }
+  
+  
+  
+  
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;

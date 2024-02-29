@@ -1,204 +1,197 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EditorialService } from 'src/app/services/editorial.service';
 import { AuthorService } from 'src/app/services/author.service';
 import { GenreService } from 'src/app/services/genre.service';
-import { AddEditorialDialogComponent } from '../add-editorial-dialog/add-editorial-dialog.component';
+import { BooksService } from 'src/app/services/books.service';
 import { Editorial } from 'src/app/models/editorial';
-import { AddAuthorDialogComponent } from '../add-author-dialog/add-author-dialog.component';
 import { Author } from 'src/app/models/author';
-import { AddGenreDialogComponent } from '../add-genre-dialog/add-genre-dialog.component';
 import { Genre } from 'src/app/models/genre';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
+import { AddAuthorDialogComponent } from '../add-author-dialog/add-author-dialog.component';
+import { AddEditorialDialogComponent } from '../add-editorial-dialog/add-editorial-dialog.component';
+import { AddGenreDialogComponent } from '../add-genre-dialog/add-genre-dialog.component';
 
 @Component({
   selector: 'app-add-book-dialog',
   templateUrl: './add-book-dialog.component.html',
-  styleUrls: ['./add-book-dialog.component.css']
+  styleUrls: ['./add-book-dialog.component.css'],
 })
 export class AddBookDialogComponent implements OnInit {
-
-  addNewEditorial(event: Event): void {
-    event.stopPropagation();
-    // Lógica para agregar nueva editorial
-  }
-  
-  addNewAuthor(event: Event): void {
-    event.stopPropagation();
-    // Lógica para agregar nuevo autor
-  }
-  
-  addNewGenre(event: Event): void {
-    event.stopPropagation();
-    // Lógica para agregar nuevo género
-  }
-  
-  bookForm!: FormGroup;
-  editorials: any[] = [];
-  authors: any[] = [];  // Agrega la propiedad authors
-  genres: any[] = [];  // Agrega la propiedad genres
+  bookData: any = {};
+  editorials: Editorial[] = [];
+  authors: Author[] = [];
+  genres: Genre[] = [];
+  bookTitles: string[] = [];
+  filteredOptions: Observable<string[]> | undefined;
 
   constructor(
     private dialogRef: MatDialogRef<AddBookDialogComponent>,
-    private formBuilder: FormBuilder, 
     private editorialService: EditorialService,
     private authorService: AuthorService,
     private genreService: GenreService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar
-  ) { }
+    private snackBar: MatSnackBar,
+    private bookService: BooksService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.bookForm = this.formBuilder.group({
-      id: [''], // Assuming you want to allow manual entry for ID, otherwise exclude this line
-      title: ['', Validators.required],
-      stock: ['', Validators.required],
-      available: ['', Validators.required],
-      genreId: ['', Validators.required],
-      authorId: ['', Validators.required],
-      editorialId: ['', Validators.required],
-    }); 
-
-    // Llama a los servicios para obtener datos desde el backend
-    this.editorialService.getEditorials().subscribe(editorials => {
+    // Cargar datos iniciales, como editoriales, autores, géneros, etc.
+    this.editorialService.getEditorials().subscribe((editorials) => {
       this.editorials = editorials;
     });
 
-    this.authorService.getAuthors().subscribe(authors => {
+    this.authorService.getAuthors().subscribe((authors) => {
       this.authors = authors;
     });
 
-    this.genreService.getGenres().subscribe(genres => {
+    this.genreService.getGenres().subscribe((genres) => {
       this.genres = genres;
     });
+
+    this.bookService.getBookTitles().subscribe(
+      (titles: string[]) => {
+        this.bookTitles = titles;
+      },
+      (error) => {
+        console.error('Error al obtener los títulos de los libros', error);
+      }
+    );
   }
 
   saveBook(): void {
-    if (this.bookForm.valid) {
-      this.dialogRef.close(this.bookForm.value);
+    if (this.bookData.title && this.bookData.genreId && this.bookData.authorId && this.bookData.editorialId) {
+      const bookData = this.bookData;
+      // Realizar la búsqueda en la base de datos para verificar si el libro ya existe
+      this.bookService.checkBookExists(bookData).subscribe(
+        (response: any) => {
+          const exists: boolean = response.exists;
+          if (exists) {
+            // Si el libro ya existe, mostrar un mensaje de error
+            this.snackBar.open('¡El libro ya existe!', 'Cerrar', {
+              duration: 4000,
+            });
+          } else {
+            // Si el libro no existe, cerrar el diálogo y guardar el nuevo libro
+            this.dialogRef.close(bookData);
+          }
+        },
+        (error) => {
+          console.error('Error al verificar si el libro existe:', error);
+          // Manejar el error adecuadamente, por ejemplo, mostrando un mensaje al usuario
+          this.snackBar.open('Error al verificar si el libro existe', 'Cerrar', {
+            duration: 4000,
+          });
+        }
+      );
+    } else {
+      // Mostrar un mensaje de error si algún campo obligatorio está vacío
+      this.snackBar.open('¡Todos los campos son obligatorios!', 'Cerrar', {
+        duration: 4000,
+      });
     }
   }
-
+  
   cancel(): void {
     this.dialogRef.close();
   }
 
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.bookTitles.filter((option) =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
+
+  
   openAddEditorialDialog(event: Event): void {
     event.stopPropagation();
     const dialogRef = this.dialog.open(AddEditorialDialogComponent, {
       width: '300px',
     });
-  
+
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        
         this.editorialService.addEditorial(result).subscribe(
           (createdEditorial: Editorial) => {
-            // La creación fue exitosa, puedes hacer lo que necesites con la nueva editorial
             this.snackBar.open('Editorial creada con éxito', 'Cerrar', {
-              duration: 4000
+              duration: 4000,
             });
-            this.editorialService.getEditorials().subscribe(editorials => {
+            this.editorialService.getEditorials().subscribe((editorials) => {
               this.editorials = editorials;
-              
-              // Establecer el valor del formulario para la nueva editorial
-              this.bookForm.patchValue({
-                editorialId: createdEditorial.id
-              });
+              // Aquí debes asignar el valor directamente a bookData.editorialId
+              this.bookData.editorialId = createdEditorial.id;
             });
           },
-          error => {
+          (error) => {
             console.error('Error al crear la editorial', error);
           }
         );
-  
-        
       }
     });
   }
-  
+
   openAddGenreDialog(event: Event): void {
     event.stopPropagation();
     const dialogRef = this.dialog.open(AddGenreDialogComponent, {
       width: '300px',
     });
-  
+
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        
         this.genreService.addGenre(result).subscribe(
           (createdGenre: Genre) => {
-            // La creación fue exitosa, puedes hacer lo que necesites con el nuevo género
             this.snackBar.open('Género creado con éxito', 'Cerrar', {
-              duration: 4000
+              duration: 4000,
             });
-            this.genreService.getGenres().subscribe(genres => {
+            this.genreService.getGenres().subscribe((genres) => {
               this.genres = genres;
-              
-              // Establecer el valor del formulario para el nuevo género
-              this.bookForm.patchValue({
-                genreId: createdGenre.id
-              });
+              // Aquí debes asignar el valor directamente a bookData.genreId
+              this.bookData.genreId = createdGenre.id;
             });
           },
-          error => {
+          (error) => {
             console.error('Error al crear el género', error);
           }
         );
-  
-        
       }
     });
   }
-  
 
   openAddAuthorDialog(event: Event): void {
     event.stopPropagation();
     const dialogRef = this.dialog.open(AddAuthorDialogComponent, {
       width: '300px',
     });
-  
+
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        
         this.authorService.addAuthor(result).subscribe(
           (createdAuthor: Author) => {
-            // La creación fue exitosa, puedes hacer lo que necesites con el nuevo autor
             this.snackBar.open('Autor creado con éxito', 'Cerrar', {
-              duration: 4000
+              duration: 4000,
             });
-            this.authorService.getAuthors().subscribe(authors => {
+            this.authorService.getAuthors().subscribe((authors) => {
               this.authors = authors;
-              
-              // Establecer el valor del formulario para el nuevo autor
-              this.bookForm.patchValue({
-                authorId: createdAuthor.id
-              });
+              // Aquí debes asignar el valor directamente a bookData.authorId
+              this.bookData.authorId = createdAuthor.id;
             });
           },
-          error => {
+          (error) => {
             console.error('Error al crear el autor', error);
           }
         );
-  
-        
       }
     });
   }
-  
 
-  
 
-  mostrarSnackbar(
-    mensaje: string,
-    panelClass: string[] = [],
-    duration: number = 5000
-  ): void {
-    const config: MatSnackBarConfig = {
-      duration: duration,
-      panelClass: panelClass,
-    };
-    this.snackBar.open(mensaje, 'Cerrar', config);
+  // Método para filtrar caracteres no numéricos en el campo stock
+  filterInput(event: any) {
+    const inputChar = String.fromCharCode(event.keyCode);
+    if (!/^\d*$/.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

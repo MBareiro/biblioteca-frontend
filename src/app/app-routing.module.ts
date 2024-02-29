@@ -5,11 +5,9 @@ import { UserManagementComponent } from './components/user-management/user-manag
 import { LoanComponent } from './components/loan/loan.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
-import { BeneficiariesComponent } from './components/beneficiaries/beneficiaries.component';
 import { AuthorsComponent } from './components/authors/authors.component';
 import { EditorialsComponent } from './components/editorials/editorials.component';
 import { GenresComponent } from './components/genres/genres.component';
-import { BeneficiariesCreateComponent } from './components/beneficiaries-create/beneficiaries-create.component';
 import { BeneficiariesListComponent } from './components/beneficiaries-list/beneficiaries-list.component';
 import { LoanListComponent } from './components/loan-list/loan-list.component';
 import { LoanCreateComponent } from './components/loan-create/loan-create.component';
@@ -21,6 +19,7 @@ import { UserListComponent } from './components/user/user-list/user-list.compone
 import { ForgotPasswordComponent } from './components/account/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/account/reset-password/reset-password.component';
 import { ChangePasswordComponent } from './components/account/change-password/change-password.component';
+import { AdminGuard } from './admin.guard';
 
 /* const routes: Routes = [
   { path: 'catalog', component: NavigationComponent },
@@ -36,11 +35,9 @@ const routes: Routes = [
   { path: 'navigation', component: NavigationComponent, children: [
     { path: 'catalog', component: CatalogComponent },
     { path: 'user-management', component: UserCreateComponent },
-    { path: 'user-create', component: UserCreateComponent },
-    { path: 'user-list', component: UserListComponent },
-    { path: 'beneficiaries', component: BeneficiariesComponent },    
+    { path: 'user-create', component: UserCreateComponent, canActivate: [AdminGuard] },
+    { path: 'user-list', component: UserListComponent, canActivate: [AdminGuard] },  
     { path: 'beneficiaries-list', component: BeneficiariesListComponent },    
-    { path: 'beneficiaries-create', component: BeneficiariesCreateComponent },
 
     { path: 'loan', component: LoanComponent },
     { path: 'loan-list', component: LoanListComponent },

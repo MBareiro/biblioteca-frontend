@@ -14,11 +14,12 @@ import { Router } from '@angular/router';
 export class NavigationComponent {
   private breakpointObserver = inject(BreakpointObserver);
   userName: string | null;
+  userRole: string | null;
 
   constructor(private authService: AuthService, private router: Router){
     this.userName = localStorage.getItem('userName');
+    this.userRole = localStorage.getItem('userRole');
     authService.authorized();
-    console.log(this.userName);
   }
   
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -32,7 +33,6 @@ export class NavigationComponent {
     localStorage.removeItem('userId');
     localStorage.removeItem('userName');
     localStorage.removeItem('userRole');
-    console.log("si");
     
     this.authService.logout();
     this.router.navigate(['/login']);  // Redirigir a la página de inicio de sesión

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +22,15 @@ export class AuthService {
     const userId = localStorage.getItem('userId');
     const userRole = localStorage.getItem('userRole');
     
-    if (!userName || !userId || !userRole) {
-      console.log("navigate");
-      
+    if (!userName || !userId || !userRole) {      
       this.router.navigate(['/']);
     }
+  }
+
+  isAdmin(): Observable<boolean> {
+    const userRole = localStorage.getItem('userRole');    
+    // Supongamos que 'admin' es el rol que identifica a un usuario administrador
+    return of(userRole === 'admin');
   }
 
   logout(): Observable<any> {

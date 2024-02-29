@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 import { UserService } from '../../../services/user.service';
@@ -24,7 +25,7 @@ export class ChangePasswordComponent {
   newPassword: string = '';
   confirmPassword: string = '';
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService) {}
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private snackBar: MatSnackBar) {}
   
   changePassword(): void {
     const userId = localStorage.getItem('userId');
@@ -52,6 +53,9 @@ export class ChangePasswordComponent {
               background: '#191c24',
               timer: 1500,
             }) */
+            this.snackBar.open('Contraseña actualizada correctamente: ', 'Cerrar', {
+              duration: 4000
+            });
             this.passwordForm.reset()
           },
           (error) => {

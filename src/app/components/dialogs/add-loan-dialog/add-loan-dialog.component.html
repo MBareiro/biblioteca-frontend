@@ -2,19 +2,19 @@
 <mat-dialog-content>
     <form [formGroup]="loanForm">
 
-        <mat-form-field>
+        <!-- <mat-form-field>
             <mat-label>Fecha de Préstamo</mat-label>
             <input matInput [matDatepicker]="loanDatepicker" formControlName="loan_date" required>
             <mat-datepicker-toggle matSuffix [for]="loanDatepicker"></mat-datepicker-toggle>
             <mat-datepicker #loanDatepicker></mat-datepicker>
-        </mat-form-field>
+        </mat-form-field>-->
 
         <mat-form-field>
             <mat-label>Fecha de Devolución</mat-label>
-            <input matInput [matDatepicker]="returnDatepicker" formControlName="return_date" required>
+            <input matInput [matDatepicker]="returnDatepicker" formControlName="return_date" [min]="minDate" required readonly>
             <mat-datepicker-toggle matSuffix [for]="returnDatepicker"></mat-datepicker-toggle>
-            <mat-datepicker #returnDatepicker></mat-datepicker>
-        </mat-form-field>
+            <mat-datepicker #returnDatepicker ></mat-datepicker>
+        </mat-form-field> 
 
         <mat-form-field>
             <mat-label>Beneficiario</mat-label>
@@ -32,6 +32,9 @@
                     {{ book.title }}
                 </mat-option>
             </mat-select>
+            <!-- <button mat-icon-button matSuffix color="primary" >
+                <mat-icon>add</mat-icon>
+            </button> -->
         </mat-form-field>
     </form>
 </mat-dialog-content>

@@ -10,6 +10,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class AddBeneficiaryDialogComponent {
   subscriptionMonthsOptions: number[] = Array.from({ length: 12 }, (_, index) => index + 1);
   beneficiaryForm: FormGroup;
+  minDate: Date;
 
   constructor(
     private dialogRef: MatDialogRef<AddBeneficiaryDialogComponent>,
@@ -20,7 +21,16 @@ export class AddBeneficiaryDialogComponent {
       name: ['', Validators.required],
       last_name: ['', Validators.required],
       phone: ['', Validators.required],
+      address: ['', Validators.required],
+      dni: ['', Validators.required],
+      birthdate: ['', Validators.required],
     });
+    const currentDay = new Date(); // Obtiene la fecha actual
+    this.minDate = new Date(
+      currentDay.getFullYear(),
+      currentDay.getMonth(),
+      currentDay.getDate() 
+    );
   }
 
   save() {

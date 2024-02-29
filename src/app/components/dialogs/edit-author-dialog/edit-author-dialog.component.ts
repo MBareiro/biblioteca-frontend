@@ -9,9 +9,6 @@ import { Beneficiary } from 'src/app/models/beneficiary';
   styleUrls: ['./edit-author-dialog.component.css']
 })
 export class EditAuthorDialogComponent {
-
-
-
     editForm: FormGroup;
   
     constructor(
@@ -20,8 +17,8 @@ export class EditAuthorDialogComponent {
       private formBuilder: FormBuilder
     ) {
       this.editForm = this.formBuilder.group({
-        name: [this.capitalizeFirstLetter(data.name), Validators.required],
-        last_name: [this.capitalizeFirstLetter(data.last_name), Validators.required],
+        name: [this.capitalizeFirstLetter(data.name), Validators.required],/* 
+        last_name: [this.capitalizeFirstLetter(data.last_name), Validators.required], */
       });
     }
   
@@ -37,8 +34,7 @@ export class EditAuthorDialogComponent {
         };
         this.dialogRef.close(updateAuthor);
       }
-    }
-  
+    }  
   
     private capitalizeFirstLetter(value: string): string {
       return value.charAt(0).toUpperCase() + value.slice(1);

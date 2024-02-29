@@ -16,15 +16,20 @@ export class AddAuthorDialogComponent {
     private fb: FormBuilder
   ) {
     this.authorForm = this.fb.group({
-      name: ['', Validators.required],
-      last_name: ['', Validators.required],
+      name: ['', Validators.required],/* 
+      last_name: ['', Validators.required], */
       // Agrega más campos según tus necesidades
     });
   }
 
   save() {
+    console.log("asdasd");
+    
     if (this.authorForm.valid) {
       this.dialogRef.close(this.authorForm.value);
+    } else {
+      console.log("Complete lo");
+      
     }
   }
 

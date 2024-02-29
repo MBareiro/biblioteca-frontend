@@ -54,14 +54,14 @@
         <mat-icon class="vertical-align-middle icon-with-margin a" >lock</mat-icon>
         <span class="vertical-align-middle">Seguridad</span>
       </a>
-      <mat-expansion-panel>
+      <mat-expansion-panel *ngIf="userRole === 'admin'">
         <mat-expansion-panel-header>
           <mat-icon class="vertical-align-middle icon-with-margin">group</mat-icon>
           <span class="vertical-align-middle">Usuarios</span>
         </mat-expansion-panel-header>
         <!-- Contenido adicional para el panel desplegable -->
-        <a mat-list-item routerLink="/navigation/user-create"><mat-icon class="vertical-align-middle icon-with-margin">add_circle</mat-icon>Crear </a>
-        <a mat-list-item routerLink="/navigation/user-list"><mat-icon class="vertical-align-middle icon-with-margin">list_alt</mat-icon>Listar</a>
+        <a mat-list-item routerLink="/navigation/user-create"><mat-icon class="vertical-align-middle icon-with-margin" *ngIf="userRole === 'admin'">add_circle</mat-icon>Crear </a>
+        <a mat-list-item routerLink="/navigation/user-list"><mat-icon class="vertical-align-middle icon-with-margin" *ngIf="userRole === 'admin'">list_alt</mat-icon>Listar</a>
         <!-- Agrega más opciones según sea necesario -->
       </mat-expansion-panel>
       

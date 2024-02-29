@@ -23,18 +23,16 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AddBookDialogComponent } from './components/dialogs/add-book-dialog/add-book-dialog.component';
-import { ReactiveFormsModule } from '@angular/forms'; 
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { EditBookDialogComponent } from './components/dialogs/edit-book-dialog/edit-book-dialog.component';
-import { BeneficiariesComponent } from './components/beneficiaries/beneficiaries.component';
 import { MatSelectModule } from '@angular/material/select';
 import { EditBeneficiaryDialogComponent } from './components/dialogs/edit-beneficiary-dialog/edit-beneficiary-dialog.component';
 import { AddLoanDialogComponent } from './components/dialogs/add-loan-dialog/add-loan-dialog.component';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatMenuModule } from '@angular/material/menu';
 import { BeneficiariesListComponent } from './components/beneficiaries-list/beneficiaries-list.component';
-import { BeneficiariesCreateComponent } from './components/beneficiaries-create/beneficiaries-create.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BooksComponent } from './components/books/books.component';
 import { AuthorsComponent } from './components/authors/authors.component';
@@ -51,7 +49,7 @@ import { EditorialsCreateComponent } from './components/editorials-create/editor
 import { EditEditorialDialogComponent } from './components/dialogs/edit-editorial-dialog/edit-editorial-dialog.component';
 import { LoanCreateComponent } from './components/loan-create/loan-create.component';
 import { LoanListComponent } from './components/loan-list/loan-list.component';
-import { EditLoanDialogComponent } from './components/dialogs/edit-loan-dialog/edit-loan-dialog.component'; 
+import { EditLoanDialogComponent } from './components/dialogs/edit-loan-dialog/edit-loan-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AddEditorialDialogComponent } from './components/dialogs/add-editorial-dialog/add-editorial-dialog.component';
@@ -72,6 +70,8 @@ import { ForgotPasswordComponent } from './components/account/forgot-password/fo
 import { ResetPasswordComponent } from './components/account/reset-password/reset-password.component';
 import { ChangePasswordComponent } from './components/account/change-password/change-password.component';
 import { AddSubscriptionDialogComponent } from './components/dialogs/add-subscription-dialog/add-subscription-dialog.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,11 +82,9 @@ import { AddSubscriptionDialogComponent } from './components/dialogs/add-subscri
     NavigationComponent,
     AddBookDialogComponent,
     EditBookDialogComponent,
-    BeneficiariesComponent,
     EditBeneficiaryDialogComponent,
     AddLoanDialogComponent,
     BeneficiariesListComponent,
-    BeneficiariesCreateComponent,
     BooksComponent,
     AuthorsComponent,
     AuthorsListComponent,
@@ -118,7 +116,7 @@ import { AddSubscriptionDialogComponent } from './components/dialogs/add-subscri
     ForgotPasswordComponent,
     ResetPasswordComponent,
     ChangePasswordComponent,
-    AddSubscriptionDialogComponent
+    AddSubscriptionDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -147,11 +145,10 @@ import { AddSubscriptionDialogComponent } from './components/dialogs/add-subscri
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule,
-    FormsModule  
+    FormsModule,
+    MatAutocompleteModule
   ],
-  providers: [
-    FormValidators,
-  ], 
-  bootstrap: [AppComponent]
+  providers: [FormValidators],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

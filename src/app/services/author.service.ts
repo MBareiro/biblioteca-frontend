@@ -31,4 +31,5 @@ export class AuthorService {
     const updateUrl = `${this.baseUrl}/${author.id}`;
     return this.httpClient.put<Author>(updateUrl, author);
   }
+  
 }

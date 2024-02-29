@@ -1,12 +1,9 @@
 <!-- add-editorial-dialog.component.html -->
-<h2 mat-dialog-title>Agregar Autor</h2>
+<h2 mat-dialog-title>Agregar Autor/es</h2>
 <mat-dialog-content>
     <form [formGroup]="authorForm">
         <mat-form-field>
-            <input matInput placeholder="Nombre" formControlName="name">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput placeholder="Apellido" formControlName="last_name">
+            <input matInput placeholder="Nombre/s" formControlName="name">
         </mat-form-field>
     </form>
 </mat-dialog-content>

@@ -28,4 +28,5 @@ export class BeneficiariesService {
     const updateUrl = `${this.baseUrl}/${beneficiary.id}`;
     return this.httpClient.put<Beneficiary>(updateUrl, beneficiary);
   }
+  
 }

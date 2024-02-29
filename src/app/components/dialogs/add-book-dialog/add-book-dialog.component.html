@@ -3,15 +3,23 @@
         <mat-card-title>Agregar Libro</mat-card-title>
     </mat-card-header>
     <mat-dialog-content>
-        <form [formGroup]="bookForm">
-            <mat-form-field class="full-width">
-                <input matInput placeholder="Title" formControlName="title">
+        <form #bookForm="ngForm" (ngSubmit)="saveBook()">
+
+            <mat-form-field>
+                <mat-label>Titulo</mat-label>
+                <input type="text" aria-label="title" matInput [matAutocomplete]="auto" name="title"
+                    [(ngModel)]="bookData.title">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let title of filteredOptions | async" [value]="title">
+                        {{ title }}
+                    </mat-option>
+                </mat-autocomplete>
             </mat-form-field>
 
-            <!-- Agrega el botón "Agregar" con la llamada a la función openAddEditorialDialog -->
+
             <mat-form-field class="full-width">
                 <mat-label>Editorial</mat-label>
-                <mat-select formControlName="editorialId">
+                <mat-select name="editorialId" [(ngModel)]="bookData.editorialId">
                     <mat-option *ngFor="let editorial of editorials" [value]="editorial.id">
                         {{ editorial.name }}
                     </mat-option>
@@ -24,7 +32,7 @@
 
             <mat-form-field class="full-width">
                 <mat-label>Author</mat-label>
-                <mat-select formControlName="authorId">
+                <mat-select name="authorId" [(ngModel)]="bookData.authorId">
                     <mat-option *ngFor="let author of authors" [value]="author.id">
                         {{ author.name }}
                     </mat-option>
@@ -36,7 +44,7 @@
 
             <mat-form-field class="full-width">
                 <mat-label>Genre</mat-label>
-                <mat-select formControlName="genreId">
+                <mat-select name="genreId" [(ngModel)]="bookData.genreId">
                     <mat-option *ngFor="let genre of genres" [value]="genre.id">
                         {{ genre.name }}
                     </mat-option>
@@ -47,15 +55,15 @@
             </mat-form-field>
 
             <mat-form-field class="full-width">
-                <input matInput placeholder="Stock" formControlName="stock">
+                <mat-label>Cantidad</mat-label>
+                <input matInput type="number" min="1" placeholder="Cantidad" name="stock" [(ngModel)]="bookData.stock"
+                    (input)="filterInput($event)">
             </mat-form-field>
 
-            <mat-form-field class="full-width">
-                <input matInput placeholder="Available" formControlName="available">
-            </mat-form-field>
+
 
             <div class="button-container">
-                <button mat-raised-button color="primary" (click)="saveBook()">Save</button>
+                <button mat-raised-button color="primary" type="submit">Save</button>
                 <button mat-button (click)="cancel()">Cancel</button>
             </div>
         </form>

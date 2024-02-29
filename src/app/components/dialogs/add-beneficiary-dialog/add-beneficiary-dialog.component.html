@@ -3,14 +3,25 @@
 <mat-dialog-content>
     <form [formGroup]="beneficiaryForm">
         <mat-form-field>
-            <input matInput placeholder="Nombre" formControlName="name">
+            <input matInput placeholder="Nombre" formControlName="name" />
         </mat-form-field>
         <mat-form-field>
-            <input matInput placeholder="Apellido" formControlName="last_name">
+            <input matInput placeholder="Apellido" formControlName="last_name" />
         </mat-form-field>
         <mat-form-field>
-            <input matInput placeholder="Telefono" formControlName="phone">
-        </mat-form-field>        
+            <input matInput placeholder="Telefono" formControlName="phone" />
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Direccion" formControlName="address" />
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Documento de identidad" formControlName="dni" />
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Fecha de nacimiento" formControlName="birthdate" [max]="minDate"/>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions>

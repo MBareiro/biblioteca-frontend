@@ -54,14 +54,8 @@ export class LoginComponent {
         
         this.snackBar.open('Credenciales incorrectas', 'Cerrar', {
           duration: 4000
-        });
-        // Manejar errores de la solicitud HTTP        
-        this.snackBar.open(errorMessage, 'Cerrar', {
-          duration: 4000
-        });
-        /* this.mostrarSnackbar('Verifique su correo y contraseña.', [
-          'error-snackbar',
-        ]); */
+        });      
+        
         console.error('Error en la solicitud:', error);
       }
     );

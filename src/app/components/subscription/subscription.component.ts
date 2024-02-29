@@ -44,6 +44,8 @@ export class SubscriptionComponent implements OnInit {
   loadSubscriptions(): void {
     this.subscriptionService.getSubscriptions().subscribe(
       (data: Subscription[]) => {
+        console.log(data);
+        
         this.dataSource.data = data;
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -105,11 +107,12 @@ export class SubscriptionComponent implements OnInit {
   }
 
   openRenewSubscriptionDialog(subscription: Subscription): void {
-    if (!subscription || typeof subscription.id !== 'number') {
+    if (!subscription || typeof subscription.id_user !== 'number') {
       console.error('Suscripción inválida:', subscription);
       return;
     }
-
+    console.log(subscription);
+    
     const dialogRef = this.dialog.open(RenewSubscriptionDialogComponent, {
       width: '250px',
       data: { subscription: subscription }, // Pasar el objeto de suscripción completo
@@ -121,10 +124,10 @@ export class SubscriptionComponent implements OnInit {
         console.log(result);
 
         const updatedSubscription: Subscription = result;
-        const id_user = updatedSubscription.id;
-        if (id_user) {
+        const id_subscription = updatedSubscription.id;
+        if (id_subscription) {
           this.subscriptionService
-            .updateSubscription(id_user, updatedSubscription)
+            .updateSubscription(id_subscription, updatedSubscription)
             .subscribe(
               (updatedSubscription) => {
                 console.log('Suscripción actualizada:', updatedSubscription);

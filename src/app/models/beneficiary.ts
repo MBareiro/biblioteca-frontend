@@ -4,5 +4,7 @@ export interface Beneficiary {
   name: string;
   last_name: string;
   phone: string;
-  subscription?: string; // Agrega esta propiedad para almacenar el estado de la suscripción
+  address: string;
+  dni: string;
+  birthdate: string;
 }

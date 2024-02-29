@@ -6,6 +6,7 @@ import { GenreService } from 'src/app/services/genre.service';
 import { AuthorService } from 'src/app/services/author.service';
 import { EditorialService } from 'src/app/services/editorial.service';
 import { Book } from 'src/app/models/book';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edit-book-dialog',
@@ -25,14 +26,15 @@ export class EditBookDialogComponent implements OnInit {
     private genreService: GenreService,
     private authorService: AuthorService,
     private editorialService: EditorialService,
+    private snackBar: MatSnackBar
   ) {
     this.bookForm = this.formBuilder.group({
       title: [data.title, Validators.required],
       author_id: [data.author, Validators.required],
       genre_id: [data.genre, Validators.required],
       editorial_id: [data.editorial, Validators.required],
-      stock: [data.stock, Validators.required],       // Add stock field
-      available: [data.available, Validators.required] // Add available field
+      stock: [data.stock, Validators.required],      /* 
+      available: [data.available, Validators.required]  */
     });
   }
 
@@ -42,8 +44,8 @@ export class EditBookDialogComponent implements OnInit {
       author_id: [this.data.author, Validators.required],
       genre_id: [this.data.genre, Validators.required],
       editorial_id: [this.data.editorial, Validators.required],
-      stock: [this.data.stock, Validators.required],
-      available: [this.data.available, Validators.required]
+      stock: [this.data.stock, Validators.required],/* 
+      available: [this.data.available, Validators.required] */
     });
 
     this.loadMetadata();
@@ -84,12 +86,18 @@ export class EditBookDialogComponent implements OnInit {
   }
 
   saveBook(): void {
+    console.log("asd");
+    
     if (this.bookForm.valid) {
       const updatedbook: Book = {
         ...this.data,
         ...this.bookForm.value
       };
       this.dialogRef.close(updatedbook);
+    } else {
+      this.snackBar.open('Complete todos los campos', 'Cerrar', {
+        duration: 4000
+      });
     }
   }
 

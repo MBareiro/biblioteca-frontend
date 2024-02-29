@@ -106,7 +106,7 @@ export class BeneficiariesListComponent implements AfterViewInit {
 
   openEditBeneficiaryDialog(beneficiary: Beneficiary): void {
     const dialogRef = this.dialog.open(EditBeneficiaryDialogComponent, {
-      width: '260px',
+      width: '290px',
       data: beneficiary,
     });
 

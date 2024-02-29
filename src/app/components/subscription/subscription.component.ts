@@ -67,7 +67,7 @@ export class SubscriptionComponent implements OnInit {
   openAddSubscriptionDialog(): void {
     // Paso 3: Lógica para abrir el diálogo de agregar suscripción
     const dialogRef = this.dialog.open(AddSubscriptionDialogComponent, {
-      width: '250px',
+      width: '260px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -114,7 +114,7 @@ export class SubscriptionComponent implements OnInit {
     console.log(subscription);
     
     const dialogRef = this.dialog.open(RenewSubscriptionDialogComponent, {
-      width: '250px',
+      width: '260px',
       data: { subscription: subscription }, // Pasar el objeto de suscripción completo
     });
 

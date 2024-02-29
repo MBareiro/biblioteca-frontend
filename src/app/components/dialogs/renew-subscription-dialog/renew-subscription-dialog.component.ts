@@ -9,7 +9,7 @@ import { Subscription } from '../../../models/subcription';
 })
 export class RenewSubscriptionDialogComponent {
 
-  months: number[] = [1, 3, 6, 12]; // Opciones de meses para renovación
+  months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // Opciones de meses para renovación
   selectedMonths: number = 1; // Mes seleccionado por defecto
   currentDate: Date = new Date(); // Fecha actual
   endDate: Date; // Fecha de vencimiento

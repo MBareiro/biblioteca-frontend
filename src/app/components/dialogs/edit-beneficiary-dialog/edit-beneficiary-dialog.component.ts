@@ -10,7 +10,7 @@ import { Beneficiary } from '../../../models/beneficiary';
 })
 export class EditBeneficiaryDialogComponent {
   editForm: FormGroup;
-
+  minDate: Date;
   constructor(
     public dialogRef: MatDialogRef<EditBeneficiaryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Beneficiary,
@@ -20,7 +20,16 @@ export class EditBeneficiaryDialogComponent {
       name: [data.name, Validators.required],
       last_name: [data.last_name, Validators.required],
       phone: [data.phone, Validators.required],
+      address: [data.address, Validators.required],
+      dni: [data.dni, Validators.required],
+      birthdate: [new Date(data.birthdate), Validators.required],
     });
+    const currentDay = new Date(); // Obtiene la fecha actual
+    this.minDate = new Date(
+      currentDay.getFullYear(),
+      currentDay.getMonth(),
+      currentDay.getDate() 
+    );
   }
 
   onNoClick(): void {

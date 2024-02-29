@@ -36,9 +36,6 @@ export class AddBeneficiaryDialogComponent {
   save() {
     if (this.beneficiaryForm.valid) {
       const formData = this.beneficiaryForm.value;
-
-
-
       this.dialogRef.close(formData);
     }
   }

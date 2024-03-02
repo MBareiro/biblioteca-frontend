@@ -13,8 +13,8 @@
         <mat-icon>add</mat-icon> Registrar
       </button>
     </div>
-
-    <table matSort mat-table [dataSource]="dataSource">
+    <div class="responive-table"> 
+    <table matSort mat-table [dataSource]="dataSource" class="mat-table-responsive">
       <!-- Id Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
@@ -73,5 +73,6 @@
     <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="10"
       [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
     </mat-paginator>
+    </div>
   </mat-card-content>
 </mat-card>

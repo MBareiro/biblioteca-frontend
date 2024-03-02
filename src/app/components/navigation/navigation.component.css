@@ -34,3 +34,13 @@
   justify-content: space-between; /* Alinear elementos en ambos extremos */
   align-items: center; /* Centrar elementos verticalmente */
 }
+
+.toolbar-title {
+  overflow: hidden;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

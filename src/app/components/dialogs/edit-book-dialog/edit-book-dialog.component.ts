@@ -86,8 +86,6 @@ export class EditBookDialogComponent implements OnInit {
   }
 
   saveBook(): void {
-    console.log("asd");
-    
     if (this.bookForm.valid) {
       const updatedbook: Book = {
         ...this.data,

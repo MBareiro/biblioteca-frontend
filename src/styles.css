@@ -39,3 +39,7 @@ body {
   align-self: flex-start;
   /* Alinea el botón en la parte superior */
 }
+
+.responive-table {
+  overflow-x: auto;
+}

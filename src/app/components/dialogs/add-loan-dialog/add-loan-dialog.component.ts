@@ -1,6 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Beneficiary } from 'src/app/models/beneficiary';
 import { Book } from 'src/app/models/book';
@@ -10,7 +14,7 @@ import { BooksService } from 'src/app/services/books.service';
 import { LoanService } from 'src/app/services/loan.service';
 import { SubscriptionsService } from 'src/app/services/subscriptions.service';
 import { AddBookDialogComponent } from '../add-book-dialog/add-book-dialog.component';
-
+import { StockDialogComponent } from '../stock-dialog/stock-dialog.component';
 @Component({
   selector: 'app-add-loan-dialog',
   templateUrl: './add-loan-dialog.component.html',
@@ -30,7 +34,7 @@ export class AddLoanDialogComponent {
   books: Book[] = [];
   availableBooks: Book[] = [];
   minDate: Date;
-  
+
   constructor(
     private dialogRef: MatDialogRef<AddLoanDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -74,53 +78,100 @@ export class AddLoanDialogComponent {
   loadBooks(): void {
     this.bookService.getBooks().subscribe((data: Book[]) => {
       this.books = data;
-      this.filterAvailableBooks(); // Filtra los libros disponibles
+      /* this.filterAvailableBooks();  */ // Filtra los libros disponibles
     });
-  }
-
-  // Método para filtrar los libros disponibles
-  filterAvailableBooks(): void {
-    this.availableBooks = this.books.filter((book) => book.available > 0);
   }
 
   save(): void {
     if (this.loanForm.valid) {
-      const selectedBeneficiaryId = this.loanForm.value.beneficiaries_id;
-      console.log(selectedBeneficiaryId);
+      const selectedBookId = this.loanForm.value.books_id;
+
+      // Verificar si hay copias disponibles del libro seleccionado
+      let selectedBook = this.books.find(
+        (book) => book.id === selectedBookId
+      );
       
-      // Verificar si el beneficiario tiene préstamos pendientes de devolución
-      this.loanService.checkLoans(selectedBeneficiaryId).subscribe(
-        (hasPendingLoans: boolean) => {
-          console.log("wtf");
+      if (selectedBook && selectedBook.available <= 0) {
+        /* this.snackBar.open(
+          'No hay copias disponibles de este libro.',
+          'Cerrar',
+          {
+            duration: 4000,
+          }
+        );    */         
+                
+        const dialogRefStock = this.dialog.open(StockDialogComponent, {
+          data: {
+            message: 'No hay copias disponibles de este libro. ¿Desea registrar una copia?',
+            buttonText: {
+              ok: 'Sí',
+              cancel: 'No'
+            }
+          }
+        });
+  
+        dialogRefStock.afterClosed().subscribe((result: boolean) => {
           
-          if (!hasPendingLoans) {
-            // El beneficiario no tiene préstamos pendientes de devolución, continuar con la verificación de la suscripción
-            this.subscriptionService.checkSubscriptionValidity(selectedBeneficiaryId).subscribe(
-              (hasSubscription: boolean) => {
-                if (hasSubscription) {
-                  // Si el beneficiario tiene una suscripción vigente, cerrar el diálogo y guardar el préstamo
-                  this.dialogRef.close(this.loanForm.value);
-                } else {
-                  this.snackBar.open('El beneficiario seleccionado no tiene una suscripción vigente.', 'Cerrar', {
-                    duration: 4000,
-                  });
-                }
-              },
-              (error) => {
-                console.error('Error al verificar la suscripción:', error);
-              }
-            );
-          } else {
-            // El beneficiario tiene préstamos pendientes de devolución
-            this.snackBar.open('El beneficiario tiene libros pendientes de devolución.', 'Cerrar', {
-              duration: 4000,
+          if (selectedBook){
+            selectedBook.stock += 1; 
+          }             
+          const book = selectedBook
+          if (result && book) {
+            // Aumentar en uno el stock del libro seleccionado
+            this.bookService.updateBookStock(book).subscribe(() => {
+              this.dialogRef.close(this.loanForm.value);
             });
           }
-        },
-        (error) => {
-          console.error('Error al verificar préstamos pendientes de devolución:', error);
-        }
-      );
+        }); 
+        /* return;  */// Detener el proceso de guardar préstamo si no hay copias disponibles
+      } else {
+        const selectedBeneficiaryId = this.loanForm.value.beneficiaries_id;
+        // Verificar si el beneficiario tiene préstamos pendientes de devolución
+        this.loanService.checkLoans(selectedBeneficiaryId).subscribe(
+          (hasPendingLoans: boolean) => {
+            if (!hasPendingLoans) {
+              // El beneficiario no tiene préstamos pendientes de devolución, continuar con la verificación de la suscripción
+              this.subscriptionService
+                .checkSubscriptionValidity(selectedBeneficiaryId)
+                .subscribe(
+                  (hasSubscription: boolean) => {
+                    if (hasSubscription) {
+                      
+                      // Si el beneficiario tiene una suscripción vigente, cerrar el diálogo y guardar el préstamo
+                      this.dialogRef.close(this.loanForm.value);
+                    } else {
+                      this.snackBar.open(
+                        'El beneficiario seleccionado no tiene una suscripción vigente.',
+                        'Cerrar',
+                        {
+                          duration: 4000,
+                        }
+                      );
+                    }
+                  },
+                  (error) => {
+                    console.error('Error al verificar la suscripción:', error);
+                  }
+                );
+            } else {
+              // El beneficiario tiene préstamos pendientes de devolución
+              this.snackBar.open(
+                'El beneficiario tiene libros pendientes de devolución.',
+                'Cerrar',
+                {
+                  duration: 4000,
+                }
+              );
+            }
+          },
+          (error) => {
+            console.error(
+              'Error al verificar préstamos pendientes de devolución:',
+              error
+            );
+          }
+        );
+      }      
     } else {
       console.log('Formulario no válido');
     }
@@ -136,10 +187,14 @@ export class AddLoanDialogComponent {
       .checkSubscriptionValidity(selectedBeneficiaryId)
       .subscribe(
         (hasSubscription: boolean) => {
-          if (!hasSubscription) {            
-            this.snackBar.open('El beneficiario seleccionado no tiene una suscripción vigente.', 'Cerrar', {
-              duration: 4000,
-            });
+          if (!hasSubscription) {
+            this.snackBar.open(
+              'El beneficiario seleccionado no tiene una suscripción vigente.',
+              'Cerrar',
+              {
+                duration: 4000,
+              }
+            );
           }
         },
         (error) => {
@@ -147,32 +202,20 @@ export class AddLoanDialogComponent {
         }
       );
   }
-/* 
-  openAddBookDialog(event: Event): void {
-    event.stopPropagation();
+  // Método para abrir el diálogo de agregar libro
+  openAddBookDialog(): void {
     const dialogRef = this.dialog.open(AddBookDialogComponent, {
-      width: '300px',
+      width: '300px', // Define el ancho del diálogo como prefieras
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.bookService.addBook(result).subscribe(
-          (createdEditorial: Book) => {
-            this.snackBar.open('Editorial creada con éxito', 'Cerrar', {
-              duration: 4000,
-            });
-            this.bookService.getBooks().subscribe((books) => {
-              this.books = books;
-              this.loanForm.patchValue({
-                editorialId: createdEditorial.id,
-              });
-            });
-          },
-          (error) => {
-            console.error('Error al crear el libro', error);
-          }
-        );
+        // Agrega el nuevo libro a la lista de libros y selecciona automáticamente en el formulario
+        this.books.push(result);
+        this.loanForm.patchValue({
+          books_id: result.id,
+        });
       }
     });
-  } */
+  }
 }

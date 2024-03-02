@@ -26,6 +26,11 @@ export class BooksService {
     return this.httpClient.put<Book>(updateUrl, book);
   }
 
+  updateBookStock(book: Book): Observable<Book> {
+    const updateUrl = `${this.baseUrl}/stock/${book.id}`;
+    return this.httpClient.put<Book>(updateUrl, book);
+  }
+
   deleteBook(id: number): Observable<void> {
     const deleteUrl = `${this.baseUrl}/${id}`;
     return this.httpClient.delete<void>(deleteUrl);

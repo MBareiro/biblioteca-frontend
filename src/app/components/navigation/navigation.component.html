@@ -85,12 +85,15 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Bliblioteca Popular Horacio Quiroga</span>
+      <div class="toolbar-title" fxFlex="auto">
+        <span class="truncate">Bliblioteca Popular Horacio Quiroga</span>
+      </div>
       <button mat-button class="button-right" aria-label="Button on the right" (click)="logout()">
         Salir
         <mat-icon>logout</mat-icon> <!-- Icono de logout -->
       </button>
     </mat-toolbar>
+    
     <!-- Add Content Here -->
     <router-outlet></router-outlet>
   </mat-sidenav-content>

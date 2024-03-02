@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { AddAuthorDialogComponent } from '../add-author-dialog/add-author-dialog.component';
 import { AddEditorialDialogComponent } from '../add-editorial-dialog/add-editorial-dialog.component';
 import { AddGenreDialogComponent } from '../add-genre-dialog/add-genre-dialog.component';
+import { ConfirmDialogBookComponent } from '../confirm-dialog-book/confirm-dialog-book.component'; 
 
 @Component({
   selector: 'app-add-book-dialog',
@@ -61,16 +62,29 @@ export class AddBookDialogComponent implements OnInit {
   }
 
   saveBook(): void {
-    if (this.bookData.title && this.bookData.genreId && this.bookData.authorId && this.bookData.editorialId) {
+    if (this.bookData.title && this.bookData.genre_id && this.bookData.author_id && this.bookData.editorial_id) {
       const bookData = this.bookData;
       // Realizar la búsqueda en la base de datos para verificar si el libro ya existe
       this.bookService.checkBookExists(bookData).subscribe(
         (response: any) => {
           const exists: boolean = response.exists;
           if (exists) {
-            // Si el libro ya existe, mostrar un mensaje de error
-            this.snackBar.open('¡El libro ya existe!', 'Cerrar', {
-              duration: 4000,
+            // Si el libro ya existe, mostrar el cuadro de diálogo de confirmación
+            const dialogRef = this.dialog.open(ConfirmDialogBookComponent, {
+              data: {
+                message: '¡El libro ya existe! ¿Desea cargar/agregar copias nuevas o actualizar el stock del libro?',
+                buttonText: {
+                  ok: 'Sí',
+                  cancel: 'No'
+                }
+              }
+            });
+  
+            dialogRef.afterClosed().subscribe((result: boolean) => {
+              if (result) {
+                // Si el usuario selecciona "Sí", cierra el diálogo y guarda el nuevo libro
+                this.dialogRef.close(bookData);
+              }
             });
           } else {
             // Si el libro no existe, cerrar el diálogo y guardar el nuevo libro
@@ -92,6 +106,7 @@ export class AddBookDialogComponent implements OnInit {
       });
     }
   }
+  
   
   cancel(): void {
     this.dialogRef.close();
@@ -121,7 +136,7 @@ export class AddBookDialogComponent implements OnInit {
             this.editorialService.getEditorials().subscribe((editorials) => {
               this.editorials = editorials;
               // Aquí debes asignar el valor directamente a bookData.editorialId
-              this.bookData.editorialId = createdEditorial.id;
+              this.bookData.editorial_id = createdEditorial.id;
             });
           },
           (error) => {
@@ -148,7 +163,7 @@ export class AddBookDialogComponent implements OnInit {
             this.genreService.getGenres().subscribe((genres) => {
               this.genres = genres;
               // Aquí debes asignar el valor directamente a bookData.genreId
-              this.bookData.genreId = createdGenre.id;
+              this.bookData.genre_id = createdGenre.id;
             });
           },
           (error) => {
@@ -174,8 +189,8 @@ export class AddBookDialogComponent implements OnInit {
             });
             this.authorService.getAuthors().subscribe((authors) => {
               this.authors = authors;
-              // Aquí debes asignar el valor directamente a bookData.authorId
-              this.bookData.authorId = createdAuthor.id;
+              // Aquí debes asignar el valor directamente a bookData.author_id
+              this.bookData.author_id = createdAuthor.id;
             });
           },
           (error) => {

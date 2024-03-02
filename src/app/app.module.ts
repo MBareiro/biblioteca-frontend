@@ -71,6 +71,8 @@ import { ResetPasswordComponent } from './components/account/reset-password/rese
 import { ChangePasswordComponent } from './components/account/change-password/change-password.component';
 import { AddSubscriptionDialogComponent } from './components/dialogs/add-subscription-dialog/add-subscription-dialog.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { ConfirmDialogBookComponent } from './components/dialogs/confirm-dialog-book/confirm-dialog-book.component';
+import { StockDialogComponent } from './components/dialogs/stock-dialog/stock-dialog.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +119,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     ResetPasswordComponent,
     ChangePasswordComponent,
     AddSubscriptionDialogComponent,
+    ConfirmDialogBookComponent,
+    StockDialogComponent,
   ],
   imports: [
     BrowserModule,

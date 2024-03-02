@@ -7,14 +7,7 @@
             <input matInput [matDatepicker]="loanDatepicker" formControlName="loan_date" required>
             <mat-datepicker-toggle matSuffix [for]="loanDatepicker"></mat-datepicker-toggle>
             <mat-datepicker #loanDatepicker></mat-datepicker>
-        </mat-form-field>-->
-
-        <mat-form-field>
-            <mat-label>Fecha de Devolución</mat-label>
-            <input matInput [matDatepicker]="returnDatepicker" formControlName="return_date" [min]="minDate" required readonly>
-            <mat-datepicker-toggle matSuffix [for]="returnDatepicker"></mat-datepicker-toggle>
-            <mat-datepicker #returnDatepicker ></mat-datepicker>
-        </mat-form-field> 
+        </mat-form-field>-->        
 
         <mat-form-field>
             <mat-label>Beneficiario</mat-label>
@@ -28,14 +21,21 @@
         <mat-form-field>
             <mat-label>Libro</mat-label>
             <mat-select formControlName="books_id" required>
-                <mat-option *ngFor="let book of availableBooks" [value]="book.id">
+                <mat-option *ngFor="let book of books" [value]="book.id">
                     {{ book.title }}
                 </mat-option>
             </mat-select>
-            <!-- <button mat-icon-button matSuffix color="primary" >
+            <!-- <button mat-icon-button matSuffix color="primary" (click)="openAddBookDialog()">
                 <mat-icon>add</mat-icon>
             </button> -->
         </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha de Devolución</mat-label>
+            <input matInput [matDatepicker]="returnDatepicker" formControlName="return_date" [min]="minDate" required readonly>
+            <mat-datepicker-toggle matSuffix [for]="returnDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #returnDatepicker ></mat-datepicker>
+        </mat-form-field> 
     </form>
 </mat-dialog-content>
 <mat-dialog-actions>

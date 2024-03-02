@@ -21,14 +21,6 @@ import { ResetPasswordComponent } from './components/account/reset-password/rese
 import { ChangePasswordComponent } from './components/account/change-password/change-password.component';
 import { AdminGuard } from './admin.guard';
 
-/* const routes: Routes = [
-  { path: 'catalog', component: NavigationComponent },
-  { path: 'user-management', component: UserManagementComponent },
-  { path: 'loan', component: LoanComponent },
-  { path: 'statistics', component: StatisticsComponent },
-  { path: '', redirectTo: '/catalog', pathMatch: 'full' },
-];
- */
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -38,25 +30,19 @@ const routes: Routes = [
     { path: 'user-create', component: UserCreateComponent, canActivate: [AdminGuard] },
     { path: 'user-list', component: UserListComponent, canActivate: [AdminGuard] },  
     { path: 'beneficiaries-list', component: BeneficiariesListComponent },    
-
     { path: 'loan', component: LoanComponent },
     { path: 'loan-list', component: LoanListComponent },
     { path: 'loan-create', component: LoanCreateComponent },
-
     { path: 'subscription', component: SubscriptionComponent },
     { path: 'statistics', component: StatisticsComponent },
     { path: 'authors', component: AuthorsComponent },
     { path: 'editorials', component: EditorialsComponent },
     { path: 'genres', component: GenresComponent },
-
-    { path: 'change-password', component: ChangePasswordComponent },
-    
+    { path: 'change-password', component: ChangePasswordComponent },    
     { path: '', redirectTo: '/navigation/catalog', pathMatch: 'full' },
-  ]},
-  
+  ]},  
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
-
   { path: 'error-page', component: ErrorPageComponent },
   { path: '**', component: ErrorPageComponent },
 ];

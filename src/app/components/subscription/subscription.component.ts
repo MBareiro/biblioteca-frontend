@@ -71,7 +71,7 @@ export class SubscriptionComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('El diálogo de agregar suscripción se cerró');
+      console.log(result);
       if (result) {
         this.loadSubscriptions(); 
         // Aquí puedes realizar cualquier acción después de cerrar el diálogo, si es necesario

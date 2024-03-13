@@ -28,7 +28,7 @@ export class CatalogComponent implements AfterViewInit {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns: string[] = [
-    'id',
+    /* 'id', */
     'title',
     'editorialName',
     'authorName',

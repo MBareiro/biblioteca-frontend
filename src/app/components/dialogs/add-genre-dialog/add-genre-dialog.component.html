@@ -4,10 +4,11 @@
     <form [formGroup]="genreForm">
         <mat-form-field>
             <input matInput placeholder="Nombre" formControlName="name">
+            <mat-error *ngIf="genreForm.controls['name'].hasError('required')">Este campo es <strong>requerido</strong></mat-error>
         </mat-form-field>
     </form>
+    <mat-dialog-actions>
+        <button mat-button (click)="cancel()">Cancelar</button>
+        <button mat-button color="primary" (click)="save()">Guardar</button>
+    </mat-dialog-actions>
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button mat-button (click)="cancel()">Cancelar</button>
-    <button mat-button color="primary" (click)="save()">Guardar</button>
-</mat-dialog-actions>

@@ -10,7 +10,7 @@
       <mat-form-field>
         <input matInput (input)="applyFilter($event)" placeholder="Buscar" #input>
       </mat-form-field>
-      <button mat-raised-button color="accent" (click)="openAddSubscriptionDialog()">
+      <button mat-raised-button color="accent" routerLink="/navigation/subscription-create">
         <mat-icon>add</mat-icon> Registrar
       </button>
     </div>
@@ -54,10 +54,10 @@
           <!-- <button mat-mini-fab color="primary" (click)="openEditSubscriptionDialog(element)">
             <mat-icon>edit</mat-icon>
           </button> -->
-          <button mat-mini-fab color="warn" (click)="deleteSubscription(element.id)">
+          <button mat-mini-fab color="warn" (click)="deleteSubscription(element.id)" matTooltip="Borrar">
             <mat-icon>delete</mat-icon>
           </button>
-          <button mat-mini-fab color="secondary" (click)="openRenewSubscriptionDialog(element)">
+          <button mat-mini-fab color="secondary" (click)="openRenewSubscriptionDialog(element)" matTooltip="Renovar suscripción">
             <mat-icon>refresh</mat-icon>
           </button>
         </td>

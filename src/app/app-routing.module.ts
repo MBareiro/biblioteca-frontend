@@ -20,6 +20,7 @@ import { ForgotPasswordComponent } from './components/account/forgot-password/fo
 import { ResetPasswordComponent } from './components/account/reset-password/reset-password.component';
 import { ChangePasswordComponent } from './components/account/change-password/change-password.component';
 import { AdminGuard } from './admin.guard';
+import { SubscriptionCreateComponent } from './components/subscription-create/subscription-create.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
     { path: 'loan-list', component: LoanListComponent },
     { path: 'loan-create', component: LoanCreateComponent },
     { path: 'subscription', component: SubscriptionComponent },
+    { path: 'subscription-create', component: SubscriptionCreateComponent },
     { path: 'statistics', component: StatisticsComponent },
     { path: 'authors', component: AuthorsComponent },
     { path: 'editorials', component: EditorialsComponent },

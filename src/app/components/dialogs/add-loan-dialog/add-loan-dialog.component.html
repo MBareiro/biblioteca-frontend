@@ -1,21 +1,14 @@
 <h2 mat-dialog-title>Agregar Préstamo</h2>
 <mat-dialog-content>
-    <form [formGroup]="loanForm">
-
-        <!-- <mat-form-field>
-            <mat-label>Fecha de Préstamo</mat-label>
-            <input matInput [matDatepicker]="loanDatepicker" formControlName="loan_date" required>
-            <mat-datepicker-toggle matSuffix [for]="loanDatepicker"></mat-datepicker-toggle>
-            <mat-datepicker #loanDatepicker></mat-datepicker>
-        </mat-form-field>-->        
-
+    <form [formGroup]="loanForm">    
         <mat-form-field>
             <mat-label>Beneficiario</mat-label>
-            <mat-select formControlName="beneficiaries_id" required (selectionChange)="onBeneficiarySelectionChange()">
+            <mat-select formControlName="beneficiaries_id" (selectionChange)="onBeneficiarySelectionChange()" required>
                 <mat-option *ngFor="let beneficiary of beneficiaries" [value]="beneficiary.id">
                     {{ beneficiary.name }} {{ beneficiary.last_name }}
                 </mat-option>
             </mat-select>
+            <mat-error *ngIf="loanForm.controls['beneficiaries_id'].hasError('required')">Este campo es <strong>requerido</strong></mat-error>
         </mat-form-field>
 
         <mat-form-field>
@@ -25,9 +18,7 @@
                     {{ book.title }}
                 </mat-option>
             </mat-select>
-            <!-- <button mat-icon-button matSuffix color="primary" (click)="openAddBookDialog()">
-                <mat-icon>add</mat-icon>
-            </button> -->
+            <mat-error *ngIf="loanForm.controls['books_id'].hasError('required')">Este campo es <strong>requerido</strong></mat-error>
         </mat-form-field>
 
         <mat-form-field>
@@ -35,10 +26,12 @@
             <input matInput [matDatepicker]="returnDatepicker" formControlName="return_date" [min]="minDate" required readonly>
             <mat-datepicker-toggle matSuffix [for]="returnDatepicker"></mat-datepicker-toggle>
             <mat-datepicker #returnDatepicker ></mat-datepicker>
+            <mat-error *ngIf="loanForm.controls['return_date'].hasError('required')">Este campo es <strong>requerido</strong></mat-error>
         </mat-form-field> 
     </form>
+    <mat-dialog-actions>
+        <button mat-button (click)="cancel()">Cancelar</button>
+        <button mat-button color="primary" (click)="save()">Guardar</button>
+    </mat-dialog-actions>
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button mat-button (click)="cancel()">Cancelar</button>
-    <button mat-button color="primary" (click)="save()">Guardar</button>
-</mat-dialog-actions>
+

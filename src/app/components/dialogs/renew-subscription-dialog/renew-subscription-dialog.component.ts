@@ -30,11 +30,9 @@ export class RenewSubscriptionDialogComponent {
   renew(): void {
     // Verificar si el ID del beneficiario está definido
     if (this.data.subscription.id_user) {
-      console.log("entro");
-      
       // Antes de renovar, verificar si el beneficiario tiene libros pendientes
       this.loanService.checkLoans(this.data.subscription.id_user).subscribe(hasBooksPending => {
-
+  
         if (hasBooksPending) {
           // Si tiene libros pendientes, mostrar un mensaje de error
           alert('El beneficiario tiene libros pendientes por devolver. No se puede renovar la suscripción.');
@@ -42,16 +40,20 @@ export class RenewSubscriptionDialogComponent {
           // Si no tiene libros pendientes, proceder con la renovación de la suscripción
           let newEndDate: Date;
           const selectedMonths = this.selectedMonths;
-
+  
           // Calcular la nueva fecha de vencimiento sumando los meses seleccionados
           newEndDate = new Date(this.endDate.getFullYear(), this.endDate.getMonth() + selectedMonths, this.endDate.getDate());
-
+  
+          // Formatear la fecha al formato deseado ("YYYY-MM-DDTHH:mm:ss")
+          const formattedEndDate = newEndDate.toISOString().slice(0, 19);
+  
           // Crear un nuevo objeto de suscripción con los datos actualizados
           const updatedSubscription: Subscription = {
             ...this.data.subscription,
-            end_date: newEndDate.toISOString()
+            end_date: formattedEndDate
           };
-
+          console.log(formattedEndDate);
+  
           // Cerrar el diálogo y pasar el objeto de suscripción completo con los datos actualizados al componente padre
           this.dialogRef.close(updatedSubscription);
         }
@@ -60,4 +62,5 @@ export class RenewSubscriptionDialogComponent {
       console.error('ID del beneficiario no definido');
     }
   }
+  
 }

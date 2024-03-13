@@ -51,7 +51,7 @@ import { LoanCreateComponent } from './components/loan-create/loan-create.compon
 import { LoanListComponent } from './components/loan-list/loan-list.component';
 import { EditLoanDialogComponent } from './components/dialogs/edit-loan-dialog/edit-loan-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { AddEditorialDialogComponent } from './components/dialogs/add-editorial-dialog/add-editorial-dialog.component';
 import { AddAuthorDialogComponent } from './components/dialogs/add-author-dialog/add-author-dialog.component';
 import { AddGenreDialogComponent } from './components/dialogs/add-genre-dialog/add-genre-dialog.component';
@@ -70,10 +70,12 @@ import { ForgotPasswordComponent } from './components/account/forgot-password/fo
 import { ResetPasswordComponent } from './components/account/reset-password/reset-password.component';
 import { ChangePasswordComponent } from './components/account/change-password/change-password.component';
 import { AddSubscriptionDialogComponent } from './components/dialogs/add-subscription-dialog/add-subscription-dialog.component';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ConfirmDialogBookComponent } from './components/dialogs/confirm-dialog-book/confirm-dialog-book.component';
 import { StockDialogComponent } from './components/dialogs/stock-dialog/stock-dialog.component';
-
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { MY_DATE_FORMATS } from './components/shared/date-formats';
 @NgModule({
   declarations: [
     AppComponent,
@@ -150,9 +152,13 @@ import { StockDialogComponent } from './components/dialogs/stock-dialog/stock-di
     MatNativeDateModule,
     MatSnackBarModule,
     FormsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatStepperModule,
+    MatTooltipModule
   ],
-  providers: [FormValidators],
+  providers: [FormValidators, 
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

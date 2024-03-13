@@ -50,8 +50,8 @@ export class AddLoanDialogComponent {
       loan_date: [new Date(), Validators.required],
       return_date: ['', Validators.required],
       returned: false,
-      beneficiaries_id: 0,
-      books_id: 0,
+      beneficiaries_id: ['', Validators.required],
+      books_id: ['', Validators.required],
       // Agrega más campos según tus necesidades
     });
     const currentDay = new Date(); // Obtiene la fecha actual

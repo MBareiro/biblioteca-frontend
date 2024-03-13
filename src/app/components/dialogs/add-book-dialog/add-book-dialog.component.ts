@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EditorialService } from 'src/app/services/editorial.service';
@@ -20,7 +21,7 @@ import { ConfirmDialogBookComponent } from '../confirm-dialog-book/confirm-dialo
   styleUrls: ['./add-book-dialog.component.css'],
 })
 export class AddBookDialogComponent implements OnInit {
-  bookData: any = {};
+  bookForm: FormGroup;
   editorials: Editorial[] = [];
   authors: Author[] = [];
   genres: Genre[] = [];
@@ -29,13 +30,22 @@ export class AddBookDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<AddBookDialogComponent>,
+    private fb: FormBuilder,
     private editorialService: EditorialService,
     private authorService: AuthorService,
     private genreService: GenreService,
     private snackBar: MatSnackBar,
     private bookService: BooksService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.bookForm = this.fb.group({
+      title: ['', Validators.required],
+      editorial_id: ['', Validators.required],
+      author_id: ['', Validators.required],
+      genre_id: ['', Validators.required],
+      stock: ['', [Validators.required, Validators.min(1)]],
+    });
+  }
 
   ngOnInit(): void {
     // Cargar datos iniciales, como editoriales, autores, géneros, etc.
@@ -62,8 +72,8 @@ export class AddBookDialogComponent implements OnInit {
   }
 
   saveBook(): void {
-    if (this.bookData.title && this.bookData.genre_id && this.bookData.author_id && this.bookData.editorial_id) {
-      const bookData = this.bookData;
+    if (this.bookForm.valid) {
+      const bookData = this.bookForm.value;
       // Realizar la búsqueda en la base de datos para verificar si el libro ya existe
       this.bookService.checkBookExists(bookData).subscribe(
         (response: any) => {
@@ -100,13 +110,12 @@ export class AddBookDialogComponent implements OnInit {
         }
       );
     } else {
-      // Mostrar un mensaje de error si algún campo obligatorio está vacío
+      // Mostrar un mensaje de error si el formulario no es válido
       this.snackBar.open('¡Todos los campos son obligatorios!', 'Cerrar', {
         duration: 4000,
       });
     }
   }
-  
   
   cancel(): void {
     this.dialogRef.close();
@@ -119,7 +128,6 @@ export class AddBookDialogComponent implements OnInit {
     );
   }
 
-  
   openAddEditorialDialog(event: Event): void {
     event.stopPropagation();
     const dialogRef = this.dialog.open(AddEditorialDialogComponent, {
@@ -136,7 +144,7 @@ export class AddBookDialogComponent implements OnInit {
             this.editorialService.getEditorials().subscribe((editorials) => {
               this.editorials = editorials;
               // Aquí debes asignar el valor directamente a bookData.editorialId
-              this.bookData.editorial_id = createdEditorial.id;
+              this.bookForm.patchValue({ editorial_id: createdEditorial.id });
             });
           },
           (error) => {
@@ -163,7 +171,7 @@ export class AddBookDialogComponent implements OnInit {
             this.genreService.getGenres().subscribe((genres) => {
               this.genres = genres;
               // Aquí debes asignar el valor directamente a bookData.genreId
-              this.bookData.genre_id = createdGenre.id;
+              this.bookForm.patchValue({ genre_id: createdGenre.id });
             });
           },
           (error) => {
@@ -190,7 +198,7 @@ export class AddBookDialogComponent implements OnInit {
             this.authorService.getAuthors().subscribe((authors) => {
               this.authors = authors;
               // Aquí debes asignar el valor directamente a bookData.author_id
-              this.bookData.author_id = createdAuthor.id;
+              this.bookForm.patchValue({ author_id: createdAuthor.id });
             });
           },
           (error) => {
@@ -200,7 +208,6 @@ export class AddBookDialogComponent implements OnInit {
       }
     });
   }
-
 
   // Método para filtrar caracteres no numéricos en el campo stock
   filterInput(event: any) {

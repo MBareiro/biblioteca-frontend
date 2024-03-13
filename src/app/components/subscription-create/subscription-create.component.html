@@ -1,33 +1,77 @@
 <mat-card class="mat-elevation-z8">
-    <mat-card-header>
-        <mat-card-title>Crear suscripcion</mat-card-title>
-    </mat-card-header>
-
-    <mat-card-content class="content-container">
-        <!-- Select para elegir beneficiario -->
-        <div class="select-container">
+  
+  <mat-card-actions>
+    <button mat-raised-button color="accent" routerLink="/navigation/subscription" class="btn-volver">
+      Atras
+    </button>
+  </mat-card-actions>
+  <mat-card-content>
+    <mat-stepper orientation="vertical" class="demo-radio-group">
+  
+      <mat-step [stepControl]="beneficiaryForm">
+        <ng-template matStepLabel>Informacion del Beneficiario</ng-template>
+        <ng-template matStepContent>
+          <form [formGroup]="beneficiaryForm">
             <mat-form-field>
-                <mat-label>Seleccionar Beneficiario</mat-label>
-                <mat-select [(ngModel)]="subscription.id_user">
-                    <mat-option *ngFor="let beneficiary of beneficiaries" [value]="beneficiary.id">
-                        {{ beneficiary.name }}
-                    </mat-option>
-                </mat-select>
+              <mat-label>Nombre</mat-label>
+              <input matInput placeholder="Nombre" formControlName="name" required />
+              <mat-error *ngIf="beneficiaryForm.controls['name'].hasError('required')">Nombre es <strong>requerido</strong></mat-error>
             </mat-form-field>
-
-            <!-- Select para elegir duración de la suscripción -->
             <mat-form-field>
-                <mat-label>Duración de la suscripción (en meses)</mat-label>
-                <mat-select [(ngModel)]="duration" name="duration" (ngModelChange)="calculateEndDate()">
-                    <mat-option *ngFor="let month of months" [value]="month">{{ month }}</mat-option>
-                </mat-select>
+              <mat-label>Apellido</mat-label>
+              <input matInput placeholder="Apellido" formControlName="last_name" />
+              <mat-error *ngIf="beneficiaryForm.controls['last_name'].hasError('required')">Apellido es <strong>requerido</strong></mat-error>
             </mat-form-field>
-
-        </div>
-    </mat-card-content>
-
-    <mat-card-actions>
-        <button mat-button color="warn">Cancelar</button>
-        <button mat-button color="primary" (click)="saveSubscription()">Guardar</button>
-    </mat-card-actions>
+            <mat-form-field>
+              <mat-label>Telefono</mat-label>
+              <input matInput placeholder="Telefono" formControlName="phone" />
+              <mat-error *ngIf="beneficiaryForm.controls['phone'].hasError('required')">Telefono es <strong>requerido</strong></mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Dirección </mat-label>
+              <input matInput placeholder="Dirección " formControlName="address" />
+              <mat-error *ngIf="beneficiaryForm.controls['address'].hasError('required')">Dirección es <strong>requerido</strong></mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Documento</mat-label>
+              <input matInput placeholder="Documento" formControlName="dni" />
+              <mat-error *ngIf="beneficiaryForm.controls['dni'].hasError('required')">Documento es <strong>requerido</strong></mat-error>
+              <mat-error *ngIf="beneficiaryForm.controls['dni'].hasError('pattern')">Solo se admiten números</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Fecha de nacimiento</mat-label>
+              <input matInput [matDatepicker]="picker" placeholder="Fecha de nacimiento" formControlName="birthdate" [max]="minDate" readonly/>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="beneficiaryForm.controls['birthdate'].hasError('required')">Fecha de nacimiento es <strong>requerido</strong></mat-error>
+            </mat-form-field>
+            
+          </form>
+          <button mat-button matStepperNext [disabled]="!beneficiaryForm.valid">Siguiente</button>
+        </ng-template>
+      </mat-step>
+    
+      <mat-step>
+        <ng-template matStepLabel>Suscripcion</ng-template>
+        <ng-template matStepContent>
+          <form [formGroup]="suscriptionForm">
+            <mat-form-field>
+              <mat-label>Duración de la suscripción (en meses)</mat-label>
+              <mat-select formControlName="duration" name="duration" (ngModelChange)="calculateEndDate()">
+                <mat-option *ngFor="let month of months" [value]="month">{{ month }} meses</mat-option>
+              </mat-select>
+              <mat-error *ngIf="suscriptionForm.controls['duration'].hasError('required')">Este campo es <strong>requerido</strong></mat-error>
+            </mat-form-field>
+          </form>
+          <div>
+            <button mat-button matStepperPrevious>Volver</button>
+            <button mat-button matStepperNext [disabled]="!suscriptionForm.valid" (click)="saveSubscription()">Guardar</button>
+          </div>
+        </ng-template>
+      </mat-step>
+      
+    
+    
+    </mat-stepper>
+  </mat-card-content>
 </mat-card>

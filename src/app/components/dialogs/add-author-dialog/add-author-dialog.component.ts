@@ -23,13 +23,9 @@ export class AddAuthorDialogComponent {
   }
 
   save() {
-    console.log("asdasd");
     
     if (this.authorForm.valid) {
       this.dialogRef.close(this.authorForm.value);
-    } else {
-      console.log("Complete lo");
-      
     }
   }
 

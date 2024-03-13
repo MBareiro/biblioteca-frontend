@@ -3,69 +3,83 @@
         <mat-card-title>Agregar Libro</mat-card-title>
     </mat-card-header>
     <mat-dialog-content>
-        <form #bookForm="ngForm" (ngSubmit)="saveBook()">
+        <form [formGroup]="bookForm" (ngSubmit)="saveBook()">
 
             <mat-form-field>
                 <mat-label>Titulo</mat-label>
-                <input type="text" aria-label="title" matInput [matAutocomplete]="auto" name="title"
-                    [(ngModel)]="bookData.title">
+                <input type="text" aria-label="title" matInput [matAutocomplete]="auto" formControlName="title">
                 <mat-autocomplete #auto="matAutocomplete">
                     <mat-option *ngFor="let title of filteredOptions | async" [value]="title">
                         {{ title }}
                     </mat-option>
                 </mat-autocomplete>
+                <mat-error *ngIf="bookForm.controls['title'].hasError('required')">Este campo es <strong>requerido</strong>
+                </mat-error>
             </mat-form-field>
 
 
             <mat-form-field class="full-width">
                 <mat-label>Editorial</mat-label>
-                <mat-select name="editorial_id" [(ngModel)]="bookData.editorial_id">
+                <mat-select formControlName="editorial_id">
                     <mat-option *ngFor="let editorial of editorials" [value]="editorial.id">
                         {{ editorial.name }}
                     </mat-option>
                 </mat-select>
-                <button mat-icon-button matSuffix color="primary" (click)="openAddEditorialDialog($event)">
+                <button mat-icon-button matSuffix color="primary" (click)="openAddEditorialDialog($event)" type="button">
                     <mat-icon>add</mat-icon>
                 </button>
+                <mat-error *ngIf="bookForm.controls['editorial_id'].hasError('required')">Este campo es
+                    <strong>requerido</strong>
+                </mat-error>
+
+
             </mat-form-field>
 
 
             <mat-form-field class="full-width">
-                <mat-label>Author</mat-label>
-                <mat-select name="author_id" [(ngModel)]="bookData.author_id">
+                <mat-label>Autor</mat-label>
+                <mat-select formControlName="author_id">
                     <mat-option *ngFor="let author of authors" [value]="author.id">
                         {{ author.name }}
                     </mat-option>
                 </mat-select>
-                <button mat-icon-button matSuffix color="primary" (click)="openAddAuthorDialog($event)">
+                <button mat-icon-button matSuffix color="primary" (click)="openAddAuthorDialog($event)" type="button">
                     <mat-icon>add</mat-icon>
                 </button>
+                <mat-error *ngIf="bookForm.controls['author_id'].hasError('required')">Este campo es
+                    <strong>requerido</strong>
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field class="full-width">
-                <mat-label>Genre</mat-label>
-                <mat-select name="genre_id" [(ngModel)]="bookData.genre_id">
+                <mat-label>Género</mat-label>
+                <mat-select formControlName="genre_id">
                     <mat-option *ngFor="let genre of genres" [value]="genre.id">
                         {{ genre.name }}
                     </mat-option>
                 </mat-select>
-                <button mat-icon-button matSuffix color="primary" (click)="openAddGenreDialog($event)">
+                <button mat-icon-button matSuffix color="primary" (click)="openAddGenreDialog($event)" type="button">
                     <mat-icon>add</mat-icon>
                 </button>
+                <mat-error *ngIf="bookForm.controls['genre_id'].hasError('required')">Este campo es
+                    <strong>requerido</strong>
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field class="full-width">
                 <mat-label>Cantidad</mat-label>
-                <input matInput type="number" min="1" placeholder="Cantidad" name="stock" [(ngModel)]="bookData.stock"
+                <input matInput type="number" min="1" placeholder="Cantidad" formControlName="stock"
                     (input)="filterInput($event)">
+                <mat-error *ngIf="bookForm.controls['stock'].hasError('required')">Este campo es
+                    <strong>requerido</strong>
+                </mat-error>
             </mat-form-field>
 
-
-
-            <div class="button-container">
-                <button mat-raised-button color="primary" type="submit">Save</button>
-                <button mat-button (click)="cancel()">Cancel</button>
-            </div>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" type="submit">Guardar</button>
+                <button mat-button (click)="cancel()">Cancelar</button>
+            </mat-card-actions>
         </form>
+        
     </mat-dialog-content>
 </mat-card>

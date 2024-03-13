@@ -18,6 +18,9 @@
                     {{ book.title }}
                 </mat-option>
             </mat-select>
+            <button mat-icon-button matSuffix color="primary" (click)="openAddBookDialog($event)" type="button">
+                <mat-icon>add</mat-icon>
+            </button>
             <mat-error *ngIf="loanForm.controls['books_id'].hasError('required')">Este campo es <strong>requerido</strong></mat-error>
         </mat-form-field>
 
